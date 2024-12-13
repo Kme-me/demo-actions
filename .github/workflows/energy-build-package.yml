@@ -19,6 +19,7 @@ jobs:
     env:
       ENERGY_HOME: "D:/app/energy/EnergyFramework"
       NSIS_HOME: "D:/app/energy/nsis"
+      Z7Z_HOME: "D:/app/energy/7za"
 
     steps:
       - uses: actions/checkout@v4
@@ -44,13 +45,15 @@ jobs:
 
       - name: Install ENERGY ENV
         run: |
+          cd D:/app
           energy cli -v
           energy install --all --cef=109
         shell: bash
 
       - name: Build and Package
         run: |
-          cd $RUNNER_WORKSPACE
+          energy env
+          cd $RUNNER_WORKSPACE/demo-actions
           energy build
           energy package
           mv ./build/windows/demo-actions-installer.exe D:/app/install/
