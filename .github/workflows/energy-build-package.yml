@@ -42,8 +42,7 @@ jobs:
           energy cli -v
           cd D:/app
           mkdir EnergyFramework
-          $env:ENERGY_HOME="D:/app/EnergyFramework"
-          set ENERGY_HOME=D:/app/EnergyFramework
+          $ENERGY_HOME="D:/app/EnergyFramework"
           energy env
         shell: bash
 
