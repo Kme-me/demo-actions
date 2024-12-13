@@ -36,7 +36,7 @@ jobs:
           cd D:/app
           git clone https://github.com/energye/energy.git
           cd energy/cmd/energy
-#          go install
+          go install
         shell: bash
 
       - name: Install ENERGY ENV
