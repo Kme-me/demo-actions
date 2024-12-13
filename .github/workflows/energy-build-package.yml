@@ -27,6 +27,8 @@ jobs:
       - name: Config Base Environment
         run: |
           mkdir D:/app
+          $env:ENERGY_HOME="D:/app/EnergyFramework"
+          set ENERGY_HOME=D:/app/EnergyFramework
         shell: bash
 
       - name: Clone ENERGY
@@ -42,10 +44,6 @@ jobs:
           energy cli -v
           cd D:/app
           mkdir EnergyFramework
-#          curl -L https://sourceforge.net/projects/liblcl/files/v2.3.8/liblcl-109.Windows64.zip/download -o ./liblcl_109.zip
-#          curl -L https://sourceforge.net/projects/liblcl/files/CEF/109.1.18/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64_minimal.7z/download -o ./cef_109.7z
-#          7z x cef_109.7z -oD:/app/EnergyFramework
-#          7z x liblcl_109.zip -oD:/app/EnergyFramework
           energy env
         shell: bash
 
