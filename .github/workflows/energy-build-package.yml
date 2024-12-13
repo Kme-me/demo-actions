@@ -16,6 +16,9 @@ jobs:
         operating-system: [ windows-2019 ]
         lazarus-versions: [ 3.2 ]
 
+    env:
+      ENERGY_HOME: "D:/app/EnergyFramework"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -42,7 +45,6 @@ jobs:
           energy cli -v
           cd D:/app
           mkdir EnergyFramework
-          $ENERGY_HOME="D:/app/EnergyFramework"
           energy env
         shell: bash
 
