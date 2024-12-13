@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         operating-system: [ windows-2019 ]
-        lazarus-versions: [ 3.2 ]
 
     env:
       ENERGY_HOME: "D:/app/energy/EnergyFramework"
@@ -56,7 +55,7 @@ jobs:
           cd $RUNNER_WORKSPACE/demo-actions
           energy build
           energy package
-          mv ./build/windows/demo-actions-installer.exe D:/app/install/
+          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-installer.exe D:/app/install/
           ls -al D:/app/install/
         shell: bash
 
