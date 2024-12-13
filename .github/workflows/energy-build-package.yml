@@ -1,0 +1,60 @@
+name: Energy Build and Package
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches: [ "main" ]
+#    tags:
+#      - 'v*.*.*'
+
+jobs:
+  windows-64:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ windows-2019 ]
+        lazarus-versions: [ 3.2 ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.20'
+
+      - name: Config Base Environment
+        run: |
+          mkdir D:/app
+        shell: bash
+
+      - name: Clone ENERGY
+        run: |
+          cd D:/app
+          git clone https://github.com/energye/energy.git
+          cd energy/cmd/energy
+          go install
+        shell: bash
+
+      - name: Install ENERGY ENV
+        run: |
+          energy cli -v
+          cd D:/app
+          mkdir EnergyFramework
+          curl -L https://sourceforge.net/projects/liblcl/files/v2.3.8/liblcl-109.Windows64.zip/download -o ./liblcl_109.zip
+          curl -L https://sourceforge.net/projects/liblcl/files/CEF/109.1.18/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64_minimal.7z/download -o ./cef_109.7z
+          7z x cef_109.7z -oD:/app/EnergyFramework
+          7z x liblcl_109.zip -oD:/app/EnergyFramework
+          echo "ENERGY_HOME=D:/app/EnergyFramework" > environment.env
+          energy env
+        shell: bash
+
+      - name: Release Dynamic library # 版本发布上传liblcl二进制
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: D:/bins/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
