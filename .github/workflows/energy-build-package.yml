@@ -3,7 +3,6 @@ name: Energy Build and Package
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
     tags:
       - 'v*.*.*'
 
