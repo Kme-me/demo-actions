@@ -46,6 +46,8 @@ jobs:
           shell: /bin/sh # 在容器中运行命令的shell
 
           install: | #在容器中安装一些依赖项
+            apt-get update -q -y
+            apt-get install -q -y git wget
 
           run: | # run 要在容器中运行的命令，复制git文件到挂载的目录中
             pwd
