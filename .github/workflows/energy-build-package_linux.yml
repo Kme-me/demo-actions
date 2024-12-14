@@ -64,19 +64,19 @@ jobs:
           
             energy cli -v
             cd /app/demo-actions
-            rm -rf .git
-            go mod tidy
+            go env -w GOFLAGS=-buildvcs=false
             go build
+            mv demo-actions /app/install
             ls -l
             
 
       - name: Build and Package END
         run: |
-          ls -l $RUNNER_WORKSPACE/app     
+          ls -l $RUNNER_WORKSPACE/install
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ../app/install/**
+          files: ../install/**
 
