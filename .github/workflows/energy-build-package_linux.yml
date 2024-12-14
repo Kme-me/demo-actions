@@ -43,7 +43,7 @@ jobs:
           dockerRunArgs: | # 将目录装载为容器中的/app
             --volume "$RUNNER_WORKSPACE:/app"
 
-          shell: /bin/sh # 在容器中运行命令的shell
+          shell: /bin/bash # 在容器中运行命令的shell
 
           install: | #在容器中安装一些依赖项
             apt-get update -q -y
