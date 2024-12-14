@@ -30,7 +30,7 @@ if [ "$ARCH" = "amd64" ]; then
   LibLCLOSAndARCH="Linux64"
   CEFFilename="linux64"
 fi
-if [ "$ARCH" = "386" ]; then
+if [ "$ARCH" = "i386" ]; then
   LibLCLOSAndARCH="Linux32"
   CEFFilename="linux32"
 fi
