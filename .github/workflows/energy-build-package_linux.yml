@@ -44,6 +44,10 @@ jobs:
           dockerRunArgs: | # 将目录装载为容器中的/app
             --volume "$RUNNER_WORKSPACE:/app"
 
+          env: |
+            PATH: $PATH:/app/go/bin
+            ENERGY_HOME: /app/EnergyFramework
+
           shell: /bin/bash # 在容器中运行命令的shell
 
           install: | #在容器中安装一些依赖项

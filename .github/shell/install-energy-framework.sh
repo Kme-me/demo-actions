@@ -9,4 +9,4 @@ curl -L "https://sourceforge.net/projects/liblcl/files/v2.5.0/liblcl-101.Linux32
 7z x cef_binary.7z -o/app/EnergyFramework
 7z x liblcl.zip -o/app/EnergyFramework
 
-export ENERGY_HOME=/app/EnergyFramework
+#export ENERGY_HOME=/app/EnergyFramework
