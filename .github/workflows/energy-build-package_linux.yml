@@ -28,6 +28,8 @@ jobs:
       - name: Config Base Environment  # 配置基础环境
         run: |
           mkdir $RUNNER_WORKSPACE/install
+          mv ./.github/shell $RUNNER_WORKSPACE/shell
+          chmod -R +x $RUNNER_WORKSPACE/shell
 
       - name: Container Build and Package
         uses: uraimo/run-on-arch-action@v2
@@ -52,27 +54,26 @@ jobs:
           run: | # run 要在容器中运行的命令，复制git文件到挂载的目录中
             pwd
             ls -l /app
-            cd /app
-            wget "https://golang.google.cn/dl/go1.20.14.linux-386.tar.gz"
-            tar -C /app -xzf "go1.20.14.linux-386.tar.gz"
-            export PATH=$PATH:/app/go/bin
-            go version
             
-            git clone https://github.com/energye/energy.git
-            cd energy/cmd/energy
-            go build -o /app/go/bin/
-          
-            energy cli -v
+            /app/shell/install-go.sh go1.20.14.linux-386.tar.gz
+
+            /app/shell/install-energy.sh
+
+            /app/shell/install-energy-framework.sh
+
             cd /app/demo-actions
             go env -w GOFLAGS=-buildvcs=false
-            go build
+            go mod tidy
+            energy build
+            energy package
             mv demo-actions /app/install
-            ls -l
+            
             
 
-      - name: Build and Package END
+      - name: Build END
         run: |
           ls -l $RUNNER_WORKSPACE/install
+          file $RUNNER_WORKSPACE/install/demo-actions
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
