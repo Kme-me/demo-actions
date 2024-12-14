@@ -15,7 +15,7 @@ jobs:
         operating-system: [ ubuntu-20.04 ]
         include:
           - arch: arm32v7
-            distro: debian:bullseye
+            distro: bullseye
 
     steps:
       - uses: actions/checkout@v4
@@ -30,9 +30,8 @@ jobs:
         uses: uraimo/run-on-arch-action@v2
         id: build
         with:
-          arch: none
-          distro: none
-          base_image: ${{ matrix.arch }}/${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
           githubToken: ${{ github.token }}
 

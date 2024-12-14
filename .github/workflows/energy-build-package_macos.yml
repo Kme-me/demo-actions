@@ -34,6 +34,10 @@ jobs:
           cd energy/cmd/energy
           go install
 
+      - name: Install ENERGY ENV
+        run: |
+          cd $RUNNER_WORKSPACE/app
+
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
