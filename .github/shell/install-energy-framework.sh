@@ -52,8 +52,9 @@ CEFFilename=$(get_value "$CEF_VER-$CEFFilename")
 
 cd /app
 
-rm -rf cef_binary.7z
-rm -rf liblcl.zip
+rm -rf /app/cef_binary.7z
+rm -rf /app/liblcl.zip
+rm -rf /app/EnergyFramework
 
 echo "Download CEF and LibLCL, CEF: $CEF_VER/$CEFFilename, LibLCL: v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip"
 
