@@ -47,9 +47,17 @@ CEFFilename=$(get_value $CEF_VER_$CEFFilename)
 
 cd /app
 
-curl -L "https://sourceforge.net/projects/liblcl/files/CEF/$CEF_VER/$CEFFilename/download" -o "cef_binary.7z"
+echo "Download CEF and LibLCL, CEF: $CEF_VER-$CEFFilename, LibLCL: $ENG_VER-$LibLCLFilename.$LibLCLOSAndARCH.zip"
 
-curl -L "https://sourceforge.net/projects/liblcl/files/v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip/download" -o "liblcl.zip"
+CEFDownloadURL="https://sourceforge.net/projects/liblcl/files/CEF/$CEF_VER/$CEFFilename/download"
+LibLCLDownloadURL="https://sourceforge.net/projects/liblcl/files/v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip/download"
+
+echo "CEFDownloadURL: $CEFDownloadURL"
+echo "LibLCLDownloadURL: $LibLCLDownloadURL"
+
+curl -L $CEFDownloadURL -o "cef_binary.7z"
+
+curl -L $LibLCLDownloadURL -o "liblcl.zip"
 
 7z x cef_binary.7z -o/app/EnergyFramework
 7z x liblcl.zip -o/app/EnergyFramework
