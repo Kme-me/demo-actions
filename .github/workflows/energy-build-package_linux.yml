@@ -47,10 +47,11 @@ jobs:
           install: | #在容器中安装一些依赖项
             apt-get update -q -y
             apt-get install -q -y git wget
+            apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
           run: | # run 要在容器中运行的命令，复制git文件到挂载的目录中
             pwd
-            ls -al /app
+            ls -l /app
             cd /app
             wget "https://golang.google.cn/dl/go1.20.14.linux-386.tar.gz"
             tar -C /app -xzf "go1.20.14.linux-386.tar.gz"
@@ -59,11 +60,12 @@ jobs:
             
             git clone https://github.com/energye/energy.git
             cd energy/cmd/energy
-            go install
+            go build -o /app/go/bin/
           
             energy cli -v
             cd /app/demo-actions
             go build
+            ls -l
             
 
       - name: Build and Package END
