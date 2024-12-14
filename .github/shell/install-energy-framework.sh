@@ -2,16 +2,21 @@
 
 # 当前支持的最新CEF版本, 手动配置更新z
 LatestVer="130.1.16"
+ARCH=$(dpkg --print-architecture)
+
+echo "LatestVer: $LatestVer, ARCH: $ARCH"
 
 CEF_VER=$1 # 101.0.18
 ENG_VER=$2 # 2.5.0
 UseGTK3=$3 # "" 或 gtk3
+LibLCLVer=${CEF_VER%%.*} # 101
 
-ARCH=$(dpkg --print-architecture)
+echo "Arguments CEF_VER: $CEF_VER, ENG_VER: $ENG_VER, UseGTK3: $UseGTK3, LibLCLVer: $LibLCLVer"
+
+
 LibLCLFilename="liblcl" # 完整 liblclxxx.zip
 LibLCLOSAndARCH="" #
 CEFFilename="" # 完整 CEFxxx.7z
-LibLCLVer=${CEF_VER%%.*} # 101
 
 if [ "$ARCH" = "armhf" ]; then
   LibLCLOSAndARCH="LinuxARM"
