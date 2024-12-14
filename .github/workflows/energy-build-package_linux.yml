@@ -27,8 +27,7 @@ jobs:
 
       - name: Config Base Environment  # 配置基础环境
         run: |
-          mkdir $RUNNER_WORKSPACE/app
-          mkdir $RUNNER_WORKSPACE/app/install
+          mkdir $RUNNER_WORKSPACE/install
 
       - name: Container Build and Package
         uses: uraimo/run-on-arch-action@v2
@@ -57,6 +56,15 @@ jobs:
             tar -C /app -xzf "go1.20.14.linux-386.tar.gz"
             export PATH=$PATH:/app/go/bin
             go version
+            
+            git clone https://github.com/energye/energy.git
+            cd energy/cmd/energy
+            go install
+          
+            energy cli -v
+            cd /app/demo-actions
+            go build
+            
 
       - name: Build and Package END
         run: |
