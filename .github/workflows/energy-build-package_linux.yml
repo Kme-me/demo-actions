@@ -58,7 +58,7 @@ jobs:
 
             /app/shell/install-energy.sh
 
-            /app/shell/install-energy-framework.sh
+            /app/shell/install-energy-framework.sh 101.0.18 2.5.0
 
             cd /app/demo-actions
             go env -w GOFLAGS=-buildvcs=false
