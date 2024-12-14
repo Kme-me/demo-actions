@@ -8,7 +8,7 @@ on:
 
 jobs:
   Linux-32:
-    runs-on: ${{ matrix.distro }}-${{ matrix.i386 }}
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       matrix:
