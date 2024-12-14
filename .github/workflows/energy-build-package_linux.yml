@@ -159,7 +159,167 @@ jobs:
         run: |
           ls -l $RUNNER_WORKSPACE/install
 
-      - name: Release Dynamic library # 版本发布上传liblcl二进制
+      - name: Release Dynamic library
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ../install/**
+
+
+  Linux-arm:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-20.04 ]
+        include:
+          - arch: arm32v7
+            distro: ubuntu:18.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Config Base Environment
+        run: |
+          mkdir $RUNNER_WORKSPACE/install
+          mv ./.github/shell $RUNNER_WORKSPACE/shell
+          chmod -R +x $RUNNER_WORKSPACE/shell
+
+      - name: Container Build and Package
+        uses: uraimo/run-on-arch-action@v2
+        id: build
+        with:
+          arch: none
+          distro: none
+          base_image: ${{ matrix.arch }}/${{ matrix.distro }}
+
+          githubToken: ${{ github.token }}
+
+          dockerRunArgs: |
+            --volume "$RUNNER_WORKSPACE:/app"
+
+          env: |
+            BuildARCH: arm
+            ENERGY_HOME: /app/EnergyFramework
+            GoVer: go1.20.14.linux-armv6l.tar.gz
+            CEFVer: 109.1.18
+            LibLCLVer: 2.5.0
+            UseGTK3: gtk3
+
+          shell: /bin/bash
+
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git wget curl p7zip-full
+            apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
+            sudo apt-get install gcc-arm-linux-gnueabihf
+
+          run: |
+            uname -a
+            arm-linux-gnueabihf-gcc -v
+            
+            export PATH=$PATH:/app/go/bin
+            
+            /app/shell/install-go.sh $GoVer
+            
+            # 设置交叉编译环境变量 
+            export GOARCH=arm  
+            export GOARM=7
+            export GOOS=linux
+            # 指定交叉编译使用的C编译器  
+            export CC=arm-linux-gnueabihf-gcc
+            
+            /app/shell/install-energy.sh
+            
+            /app/shell/install-energy-framework.sh $CEFVer $LibLCLVer $UseGTK3
+
+            cd /app/demo-actions
+            go env -w GOFLAGS=-buildvcs=false
+            go mod tidy
+            energy build
+            energy package
+            file demo-actions
+            mv /app/demo-actions/build/linux/demo-actions-linux-$BuildARCH.deb  /app/install
+
+      - name: Build and Package END
+        run: |
+          ls -l $RUNNER_WORKSPACE/install
+
+      - name: Release Dynamic library
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ../install/**
+
+  Linux-arm64:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-20.04 ]
+        include:
+          - arch: arm64v8
+            distro: ubuntu:18.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Config Base Environment
+        run: |
+          mkdir $RUNNER_WORKSPACE/install
+          mv ./.github/shell $RUNNER_WORKSPACE/shell
+          chmod -R +x $RUNNER_WORKSPACE/shell
+
+      - name: Container Build and Package
+        uses: uraimo/run-on-arch-action@v2
+        id: build
+        with:
+          arch: none
+          distro: none
+          base_image: ${{ matrix.arch }}/${{ matrix.distro }}
+
+          githubToken: ${{ github.token }}
+
+          dockerRunArgs: |
+            --volume "$RUNNER_WORKSPACE:/app"
+
+          env: |
+            BuildARCH: arm64
+            ENERGY_HOME: /app/EnergyFramework
+            GoVer: go1.20.14.linux-arm64.tar.gz
+            CEFVer: 109.1.18
+            LibLCLVer: 2.5.0
+            UseGTK3: gtk3
+
+          shell: /bin/bash
+
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git wget curl p7zip-full
+            apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
+
+          run: |
+            export PATH=$PATH:/app/go/bin
+            
+            /app/shell/install-go.sh $GoVer
+
+            /app/shell/install-energy.sh
+            
+            /app/shell/install-energy-framework.sh $CEFVer $LibLCLVer $UseGTK3
+
+            cd /app/demo-actions
+            go env -w GOFLAGS=-buildvcs=false
+            go mod tidy
+            energy build
+            energy package
+            file demo-actions
+            mv /app/demo-actions/build/linux/demo-actions-linux-$BuildARCH.deb  /app/install
+
+      - name: Build and Package END
+        run: |
+          ls -l $RUNNER_WORKSPACE/install
+
+      - name: Release Dynamic library
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
