@@ -1,4 +1,4 @@
-name: Energy Build and Package Linux
+name: Energy Build and Package Linuxarm
 
 on:
   workflow_dispatch:
