@@ -64,6 +64,7 @@ jobs:
           
             energy cli -v
             cd /app/demo-actions
+            go mod tidy
             go build
             ls -l
             
