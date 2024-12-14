@@ -48,11 +48,14 @@ get_value() {
     grep "^$key=" "/app/shell/versionlist.txt" | cut -d'=' -f2
 }
 
-CEFFilename=$(get_value $CEF_VER_$CEFFilename)
+CEFFilename=$(get_value "$CEF_VER-$CEFFilename")
 
 cd /app
 
-echo "Download CEF and LibLCL, CEF: $CEF_VER-$CEFFilename, LibLCL: $ENG_VER-$LibLCLFilename.$LibLCLOSAndARCH.zip"
+rm -rf cef_binary.7z
+rm -rf liblcl.zip
+
+echo "Download CEF and LibLCL, CEF: $CEF_VER/$CEFFilename, LibLCL: v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip"
 
 CEFDownloadURL="https://sourceforge.net/projects/liblcl/files/CEF/$CEF_VER/$CEFFilename/download"
 LibLCLDownloadURL="https://sourceforge.net/projects/liblcl/files/v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip/download"
