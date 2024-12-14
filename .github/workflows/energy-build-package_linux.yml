@@ -2,9 +2,9 @@ name: Energy Build and Package Linux
 
 on:
   workflow_dispatch:
-#  push:
-#    tags:
-#      - 'v*.*.*'
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   Linux-32:
@@ -16,11 +16,6 @@ jobs:
         include:
           - arch: i386
             distro: ubuntu:18.04
-
-    env:
-      ENERGY_HOME: "/app/energy/EnergyFramework"
-      NSIS_HOME: "/app/energy/nsis"
-      Z7Z_HOME: "/app/energy/7za"
 
     steps:
       - uses: actions/checkout@v4
@@ -37,14 +32,14 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: ${{ matrix.arch }}/${{ matrix.distro }} # 因为没有amd架构，所以手动指定基础镜像
+          base_image: ${{ matrix.arch }}/${{ matrix.distro }}
 
           githubToken: ${{ github.token }} # 不需要，但可加快构建速度
 
-          dockerRunArgs: | # 将目录装载为容器中的/app
+          dockerRunArgs: | # 挂载目录 固定 /app
             --volume "$RUNNER_WORKSPACE:/app"
 
-          env: |
+          env: | # 预配置
             ENERGY_HOME: /app/EnergyFramework
 
           shell: /bin/bash # 在容器中运行命令的shell
@@ -54,11 +49,10 @@ jobs:
             apt-get install -q -y git wget curl p7zip-full
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
-          run: | # run 要在容器中运行的命令，复制git文件到挂载的目录中
+          run: | # run 在容器中运行的命令
             export PATH=$PATH:/app/go/bin
             pwd
             ls -l /app
-            
             
             /app/shell/install-go.sh go1.20.14.linux-386.tar.gz
 
@@ -71,14 +65,12 @@ jobs:
             go mod tidy
             energy build
             energy package
-            mv demo-actions /app/install
-            
-            
+            file demo-actions
+            mv /app/demo-actions/build/linux/demo-actions-linux-386.deb  /app/install
 
-      - name: Build END
+      - name: Build and Package END
         run: |
           ls -l $RUNNER_WORKSPACE/install
-          file $RUNNER_WORKSPACE/install/demo-actions
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
