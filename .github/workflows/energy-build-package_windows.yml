@@ -1,4 +1,4 @@
-name: Energy Build and Package
+name: Energy Build and Package Windows
 
 on:
   workflow_dispatch:
