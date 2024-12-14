@@ -7,8 +7,8 @@ on:
 #      - 'v*.*.*'
 
 jobs:
-  Linux-64:
-    runs-on: ${{ matrix.operating-system }}
+  Linux-32:
+    runs-on: ${{ matrix.distro }}-${{ matrix.i386 }}
 
     strategy:
       matrix:
@@ -54,7 +54,7 @@ jobs:
             ls -al /app
             cd /app
             wget "https://golang.google.cn/dl/go1.20.14.linux-386.tar.gz"
-            sudo tar -C /app -xzf "go1.20.14.linux-386.tar.gz"
+            tar -C /app -xzf "go1.20.14.linux-386.tar.gz"
             echo 'export PATH=$PATH:/app/go/bin' >> ~/.profile
             source ~/.profile
             go version
