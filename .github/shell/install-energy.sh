@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Install ENERGY CLI"
+
 cd /app
 
 git clone https://github.com/energye/energy.git
