@@ -51,7 +51,7 @@ jobs:
           energy build -o="demo-actions-amd64.exe"
           energy package -f="demo-actions-amd64.exe" -o="demo-actions-install-amd64.exe"
           
-          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe D:/app/install/
+          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe" D:/app/install
 
           ls -al D:/app/install/
         shell: bash
@@ -70,7 +70,7 @@ jobs:
           energy build -o="demo-actions-32.exe" --arch="386"
           energy package -f="demo-actions-32.exe" -o="demo-actions-install-32.exe"
           
-          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-32.exe D:/app/install/
+          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-32.exe" D:/app/install
 
           ls -al D:/app/install/
         shell: bash
