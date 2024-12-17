@@ -33,10 +33,24 @@ jobs:
           git clone https://github.com/energye/energy.git
           cd energy/cmd/energy
           go install
+          energy cli -v
 
-      - name: Install ENERGY ENV
+      - name: Install ENERGY CEF AMD-64
         run: |
           cd $RUNNER_WORKSPACE/app
+          energy install --all
+          energy env
+
+      - name: Build and Package AMD64
+        run: |
+          cd $RUNNER_WORKSPACE/demo-actions
+          
+          energy build -o="demo-actions-amd64"
+          energy package -f="demo-actions-amd64" -o="demo-actions-install-amd64"
+          
+          mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-actions-install-amd64" "$RUNNER_WORKSPACE/app"
+
+          ls -al $RUNNER_WORKSPACE/app
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2

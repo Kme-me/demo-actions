@@ -56,6 +56,7 @@ jobs:
 
           run: | # run 在容器中运行的命令
             # 1. 预设置全局Go环境变量
+            export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
             
             # 2. 安装当前系统架构的 Golang, https://golang.google.cn/dl/
@@ -139,6 +140,7 @@ jobs:
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
           run: |
+            export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
             
             /app/shell/install-go.sh $GoVer
