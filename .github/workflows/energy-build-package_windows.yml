@@ -22,12 +22,14 @@ jobs:
         with:
           go-version: '1.20'
 
+      # 创建基础环境目录
       - name: Config Base Environment
         run: |
           mkdir D:/app
           mkdir D:/app/install
         shell: bash
 
+      # 安装 energy cli
       - name: Install ENERGY CLI
         run: |
           cd D:/app
@@ -37,13 +39,14 @@ jobs:
           energy cli -v
         shell: bash
 
+      # windows 64 安装开发环境
       - name: Install ENERGY CEF 109-64
         run: |
           cd D:/app
           energy install --all --cef=109
           energy env
         shell: bash
-
+      # 编译和打包
       - name: Build and Package AMD64
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
@@ -56,13 +59,14 @@ jobs:
           ls -al D:/app/install/
         shell: bash
 
+      # windows 32 安装开发环境
       - name: Install ENERGY CEF 109-32
         run: |
           cd D:/app
           energy install --all --cef=109 --arch=386
           energy env
         shell: bash
-
+      # 编译和打包
       - name: Build and Package 32
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
