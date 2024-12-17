@@ -6,9 +6,9 @@ ARCH=$(dpkg --print-architecture)
 
 echo "LatestVer: $LatestVer, ARCH: $ARCH"
 
-CEF_VER=$1 # 101.0.18
-ENG_VER=$2 # 2.5.0
-UseGTK3=$3 # "" 或 gtk3
+CEF_VER=$1 # 格式: 101.0.18
+ENG_VER=$2 # 格式: 2.5.0
+UseGTK3=$3 # 格式: "" 或 gtk3
 LibLCLVer=${CEF_VER%%.*} # 101
 
 echo "Arguments CEF_VER: $CEF_VER, ENG_VER: $ENG_VER, UseGTK3: $UseGTK3, LibLCLVer: $LibLCLVer"

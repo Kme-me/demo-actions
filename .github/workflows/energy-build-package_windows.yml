@@ -33,7 +33,7 @@ jobs:
           mkdir D:/app/install
         shell: bash
 
-      - name: Clone ENERGY
+      - name: Install ENERGY CLI
         run: |
           cd D:/app
           git clone https://github.com/energye/energy.git

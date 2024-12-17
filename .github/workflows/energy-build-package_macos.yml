@@ -27,7 +27,7 @@ jobs:
           mkdir $RUNNER_WORKSPACE/app
           mkdir $RUNNER_WORKSPACE/app/install
 
-      - name: Clone ENERGY
+      - name: Install ENERGY CLI
         run: |
           cd $RUNNER_WORKSPACE/app
           git clone https://github.com/energye/energy.git
