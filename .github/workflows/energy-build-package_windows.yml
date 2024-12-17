@@ -39,12 +39,12 @@ jobs:
           git clone https://github.com/energye/energy.git
           cd energy/cmd/energy
           go install
+          energy cli -v
         shell: bash
 
-      - name: Install ENERGY ENV
+      - name: Install ENERGY CEF 109-64
         run: |
           cd D:/app
-          energy cli -v
           energy install --all --cef=109
         shell: bash
 
@@ -56,6 +56,20 @@ jobs:
           energy build -o="demo-actions-amd64.exe"
           energy package -f="demo-actions-amd64.exe" -o="demo-actions-install-amd64.exe"
           mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe D:/app/install/
+
+          ls -al D:/app/install/
+        shell: bash
+
+      - name: Install ENERGY CEF 109-32
+        run: |
+          cd D:/app
+          energy install --all --cef=109 --arch=386
+        shell: bash
+
+      - name: Build and Package 32
+        run: |
+          energy env
+          cd $RUNNER_WORKSPACE/demo-actions
           
           energy build -o="demo-actions-32.exe" --arch="386"
           energy package -f="demo-actions-32.exe" -o="demo-actions-install-32.exe"
