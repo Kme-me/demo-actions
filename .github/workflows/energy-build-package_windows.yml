@@ -48,13 +48,19 @@ jobs:
           energy install --all --cef=109
         shell: bash
 
-      - name: Build and Package
+      - name: Build and Package AMD64
         run: |
           energy env
           cd $RUNNER_WORKSPACE/demo-actions
-          energy build
-          energy package
-          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-installer.exe D:/app/install/
+          
+          energy build -o="demo-actions-amd64.exe"
+          energy package -f="demo-actions-amd64.exe" -o="demo-actions-install-amd64.exe"
+          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe D:/app/install/
+          
+          energy build -o="demo-actions-32.exe" --arch="386"
+          energy package -f="demo-actions-32.exe" -o="demo-actions-install-32.exe"
+          mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-32.exe D:/app/install/
+
           ls -al D:/app/install/
         shell: bash
 

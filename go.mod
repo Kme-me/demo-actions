@@ -3,8 +3,8 @@ module demo-actions
 go 1.18
 
 require (
-	github.com/energye/energy/v2 v2.5.0
-	github.com/energye/golcl v1.1.0
+	github.com/energye/energy/v2 v2.4.6
+	github.com/energye/golcl v1.0.12
 )
 
 require (

@@ -1,7 +1,7 @@
-github.com/energye/energy/v2 v2.5.0 h1:FFCHLP58ZfQmzQ87T8548XzTU45egnEuND9UE4L+jvY=
-github.com/energye/energy/v2 v2.5.0/go.mod h1:PZYdefuAWM0lmKJG4AurmZwEbl2Cvs96ckIm29x7LfA=
-github.com/energye/golcl v1.1.0 h1:0s6maDbnprwjD+wFJMn8rt29LgaCVwTUM6+QLQ8oAhk=
-github.com/energye/golcl v1.1.0/go.mod h1:0wCrDx7NnHT5+gylUkKi1a9DKYewmMWZQf7xYyZuq9Y=
+github.com/energye/energy/v2 v2.4.6 h1:k1095ezSWquOWFasN2rRF9uQ7Z43qpmjzq6wgffBwUA=
+github.com/energye/energy/v2 v2.4.6/go.mod h1:39y3BjgFmZagQ2OGul+IE3zk0cqXB4uL1NNG9f0Ka/A=
+github.com/energye/golcl v1.0.12 h1:1awoPXs0e/34bbqy3pUzT2qBTGVqrBRv2r3oY5ZNj1s=
+github.com/energye/golcl v1.0.12/go.mod h1:0wCrDx7NnHT5+gylUkKi1a9DKYewmMWZQf7xYyZuq9Y=
 github.com/godbus/dbus/v5 v5.1.0 h1:4KLkAxT3aOY8Li4FRJe/KvhoNFFxo0m6fNuFUO8QJUk=
 github.com/godbus/dbus/v5 v5.1.0/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/mattn/go-pointer v0.0.1/go.mod h1:2zXcozF6qYGgmsG+SeTZz3oAbFLdD3OWqnUbNvJZAlc=
