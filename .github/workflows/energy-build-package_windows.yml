@@ -14,11 +14,6 @@ jobs:
       matrix:
         operating-system: [ windows-2019 ]
 
-    env:
-      ENERGY_HOME: "D:/app/energy/EnergyFramework"
-      NSIS_HOME: "D:/app/energy/nsis"
-      Z7Z_HOME: "D:/app/energy/7za"
-
     steps:
       - uses: actions/checkout@v4
 
@@ -46,15 +41,16 @@ jobs:
         run: |
           cd D:/app
           energy install --all --cef=109
+          energy env
         shell: bash
 
       - name: Build and Package AMD64
         run: |
-          energy env
           cd $RUNNER_WORKSPACE/demo-actions
           
           energy build -o="demo-actions-amd64.exe"
           energy package -f="demo-actions-amd64.exe" -o="demo-actions-install-amd64.exe"
+          
           mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe D:/app/install/
 
           ls -al D:/app/install/
@@ -64,15 +60,16 @@ jobs:
         run: |
           cd D:/app
           energy install --all --cef=109 --arch=386
+          energy env
         shell: bash
 
       - name: Build and Package 32
         run: |
-          energy env
           cd $RUNNER_WORKSPACE/demo-actions
           
           energy build -o="demo-actions-32.exe" --arch="386"
           energy package -f="demo-actions-32.exe" -o="demo-actions-install-32.exe"
+          
           mv $RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-32.exe D:/app/install/
 
           ls -al D:/app/install/
