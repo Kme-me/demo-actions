@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  Linux-arm:
+  Linux-armv7l:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -57,20 +57,21 @@ jobs:
           run: |
             uname -a
             arm-linux-gnueabihf-gcc -v
-            
+
+            export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
-            
+
             /app/shell/install-go.sh $GoVer
-            
+
             # 设置交叉编译环境变量 
             export GOARCH=arm  
             export GOARM=7
             export GOOS=linux
             # 指定交叉编译使用的C编译器  
             export CC=arm-linux-gnueabihf-gcc
-            
+
             /app/shell/install-energy.sh
-            
+
             /app/shell/install-energy-framework.sh $CEFVer $LibLCLVer $UseGTK3
 
             cd /app/demo-actions
@@ -79,7 +80,7 @@ jobs:
             energy build -o demo
             file demo
             energy package -f demo -o demo-apparmv7l.deb
-            
+
             mv /app/demo-actions/build/linux/demo-apparmv7l.deb  /app/install
 
       - name: Build and Package END

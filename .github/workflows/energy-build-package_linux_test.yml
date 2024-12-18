@@ -58,6 +58,7 @@ jobs:
             uname -a
             arm-linux-gnueabihf-gcc -v
 
+            export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
 
             /app/shell/install-go.sh $GoVer
