@@ -7,20 +7,20 @@ on:
       - 'v*.*.*'
 
 jobs:
-  Linux-64:
+  Linux-arm64:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
       matrix:
         operating-system: [ ubuntu-20.04 ]
         include:
-          - arch: amd64
+          - arch: arm64v8
             distro: ubuntu:18.04
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Config Base Environment  # 配置基础环境
+      - name: Config Base Environment
         run: |
           mkdir $RUNNER_WORKSPACE/install
           mv ./.github/shell $RUNNER_WORKSPACE/shell
@@ -34,40 +34,32 @@ jobs:
           distro: none
           base_image: ${{ matrix.arch }}/${{ matrix.distro }}
 
-          githubToken: ${{ github.token }} # 不需要，但可加快构建速度
+          githubToken: ${{ github.token }}
 
-          dockerRunArgs: | # 挂载目录 固定 /app
+          dockerRunArgs: |
             --volume "$RUNNER_WORKSPACE:/app"
 
-          env: | # 预配置
-            GoVer: go1.20.14.linux-amd64.tar.gz
+          env: |
+            GoVer: go1.20.14.linux-arm64.tar.gz
 
-          shell: /bin/bash # 在容器中运行命令的shell
+          shell: /bin/bash
 
-          install: | #在容器中安装一些依赖项, 实际没全用上
+          install: |
             apt-get update -q -y
             apt-get install -q -y git wget p7zip-full
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
-          run: | # run 在容器中运行的命令
-            # 注意 “demo-actions” 是实际的仓库（文件夹）名
-            
-            # 1. 预设置全局Go环境变量
+          run: |
             export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
-            
-            # 2. 安装当前系统架构的 Golang, https://golang.google.cn/dl/
-            # 因为需要构建 energy cli
+
             /app/shell/install-go.sh $GoVer
 
-            # 3. 安装 energy
             /app/shell/install-energy.sh
-            
-            # 4. 安装 开发环境 使用最新版本
+
             energy install --all
             energy env
 
-            # 5. 开始构建和打包项目
             cd /app/demo-actions
             # 要设置一下
             go env -w GOFLAGS=-buildvcs=false
@@ -75,14 +67,13 @@ jobs:
             energy package -f demo -o demo-app.deb
             file demo
             
-            # 6. 将安装包移动到 /app/install 目录
             mv /app/demo-actions/build/linux/demo-app.deb  /app/install
 
       - name: Build and Package END
         run: |
           ls -l $RUNNER_WORKSPACE/install
 
-      - name: Release Dynamic library # 版本发布上传liblcl二进制
+      - name: Release Dynamic library
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
