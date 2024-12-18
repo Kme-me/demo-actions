@@ -76,10 +76,11 @@ jobs:
             cd /app/demo-actions
             go env -w GOFLAGS=-buildvcs=false
             go mod tidy
-            energy build
-            energy package
-            file demo-actions
-            mv /app/demo-actions/build/linux/demo-actions-linux-$BuildARCH.deb  /app/install
+            energy build -o demo
+            file demo
+            energy package -f demo -o demo-apparmv7l.deb
+            
+            mv /app/demo-actions/build/linux/demo-apparmv7l.deb  /app/install
 
       - name: Build and Package END
         run: |
