@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  Linux-arm:
+  Linux-armv7l:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
