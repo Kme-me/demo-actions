@@ -23,6 +23,7 @@ jobs:
       - name: Config Base Environment  # 配置基础环境
         run: |
           mkdir $RUNNER_WORKSPACE/install
+          mkdir $RUNNER_WORKSPACE/energy
           mv ./.github/shell $RUNNER_WORKSPACE/shell
           chmod -R +x $RUNNER_WORKSPACE/shell
 
@@ -40,8 +41,8 @@ jobs:
             --volume "$RUNNER_WORKSPACE:/app"
 
           env: | # 预配置
-            ENERGY_HOME: /app/EnergyFramework
             GoVer: go1.20.14.linux-386.tar.gz
+            ENERGY_FRAMEWORK: CEF-101_LINUX_32
             CEFVer: 101.0.18
             LibLCLVer: 2.5.0
             UseGTK3: ""
@@ -57,27 +58,32 @@ jobs:
             # 1. 预设置全局Go环境变量
             export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
-            
+
             # 2. 安装当前系统架构的 Golang, https://golang.google.cn/dl/
             /app/shell/install-go.sh $GoVer
 
-            # 3. 安装 energy
+            # 3. 安装 energy cli
             /app/shell/install-energy.sh
-            
+
             # 4. 安装 EnergyFramework, 该脚本 有3个参数, 1: CEF 版本, 2: liblcl 版本, 3: 可选 "" 或 gtk3
             # CEF: https://sourceforge.net/projects/liblcl/files/CEF
             # LibLCL: https://sourceforge.net/projects/liblcl/files
             /app/shell/install-energy-framework.sh $CEFVer $LibLCLVer
 
-            # 5. 开始构建和打包项目
+            # 5. 配置 EnergyFramework 开发环境 .energy
+            energy env -w Root:/app/
+            energy env -w Framework:$ENERGY_FRAMEWORK
+            energy env
+
+            # 6. 开始构建和打包项目
             cd /app/demo-actions
             go env -w GOFLAGS=-buildvcs=false
             go mod tidy
             energy build -o demo
-            energy package -f demo -o demo-linux32.deb
             file demo
-            
-            # 6. 将安装包移动到 /app/install 目录
+            energy package -f demo -o demo-linux32.deb
+
+            # 7. 将安装包移动到 /app/install 目录
             mv /app/demo-actions/build/linux/demo-linux32.deb  /app/install
 
       - name: Build and Package END
