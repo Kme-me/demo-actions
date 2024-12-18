@@ -44,9 +44,9 @@ jobs:
 
           shell: /bin/bash # 在容器中运行命令的shell
 
-          install: | #在容器中安装一些依赖项
+          install: | #在容器中安装一些依赖项, 实际没全用上
             apt-get update -q -y
-            apt-get install -q -y git
+            apt-get install -q -y git wget p7zip-full
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
           run: | # run 在容器中运行的命令
