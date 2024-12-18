@@ -157,11 +157,11 @@ jobs:
             # 要设置一下
             go env -w GOFLAGS=-buildvcs=false
             energy build -o demo
-            energy package -f demo -o demo-app.deb
+            energy package -f demo -o demo-app64.deb
             file demo
 
             # 6. 将安装包移动到 /app/install 目录
-            mv /app/demo-actions/build/linux/demo-app.deb  /app/install
+            mv /app/demo-actions/build/linux/demo-app64.deb  /app/install
 
       - name: Build and Package END
         run: |

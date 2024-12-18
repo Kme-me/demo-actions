@@ -61,13 +61,12 @@ jobs:
             energy env
 
             cd /app/demo-actions
-            # 要设置一下
             go env -w GOFLAGS=-buildvcs=false
             energy build -o demo
-            energy package -f demo -o demo-app.deb
+            energy package -f demo -o demo-apparm64.deb
             file demo
             
-            mv /app/demo-actions/build/linux/demo-app.deb  /app/install
+            mv /app/demo-actions/build/linux/demo-apparm64.deb  /app/install
 
       - name: Build and Package END
         run: |
