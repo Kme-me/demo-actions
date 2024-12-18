@@ -54,7 +54,7 @@ cd /app
 
 rm -rf /app/cef_binary.7z
 rm -rf /app/liblcl.zip
-rm -rf /app/EnergyFramework
+rm -rf /app/energy/$ENERGY_FRAMEWORK
 
 echo "Download CEF and LibLCL, CEF: $CEF_VER/$CEFFilename, LibLCL: v$ENG_VER/$LibLCLFilename.$LibLCLOSAndARCH.zip"
 
@@ -68,5 +68,5 @@ curl -L $CEFDownloadURL -o "cef_binary.7z"
 
 curl -L $LibLCLDownloadURL -o "liblcl.zip"
 
-7z x cef_binary.7z -o/app/EnergyFramework
-7z x liblcl.zip -o/app/EnergyFramework
+7z x cef_binary.7z -o/app/energy/$ENERGY_FRAMEWORK
+7z x liblcl.zip -o/app/energy/$ENERGY_FRAMEWORK

@@ -39,7 +39,6 @@ jobs:
             --volume "$RUNNER_WORKSPACE:/app"
 
           env: |
-            BuildARCH: arm
             ENERGY_HOME: /app/EnergyFramework
             GoVer: go1.20.14.linux-armv6l.tar.gz
             CEFVer: 109.1.18
