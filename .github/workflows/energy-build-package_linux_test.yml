@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  Linux-32:
+  Linux-64:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -41,7 +41,6 @@ jobs:
 
           env: | # 预配置
             GoVer: go1.20.14.linux-amd64.tar.gz
-            ProjectName: demo-actions
 
           shell: /bin/bash # 在容器中运行命令的shell
 
@@ -51,11 +50,14 @@ jobs:
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
           run: | # run 在容器中运行的命令
+            # 注意 “demo-actions” 是实际的仓库（文件夹）名
+            
             # 1. 预设置全局Go环境变量
             export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
             
             # 2. 安装当前系统架构的 Golang, https://golang.google.cn/dl/
+            # 因为需要构建 energy cli
             /app/shell/install-go.sh $GoVer
 
             # 3. 安装 energy
@@ -66,15 +68,15 @@ jobs:
             energy env
 
             # 5. 开始构建和打包项目
-            cd /app/$ProjectName
+            cd /app/demo-actions
             # 要设置一下
             go env -w GOFLAGS=-buildvcs=false
-            energy build
-            energy package
-            file $ProjectName
+            energy build -o demo
+            energy package -f demo -o demo-app.deb
+            file demo
             
             # 6. 将安装包移动到 /app/install 目录
-            mv /app/$ProjectName/build/linux/$ProjectName-linux-$BuildARCH.deb  /app/install
+            mv /app/demo-actions/build/linux/demo-app.deb  /app/install
 
       - name: Build and Package END
         run: |
