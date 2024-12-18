@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  Linux-32:
+  Linux-armv7l:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -40,7 +40,7 @@ jobs:
             --volume "$RUNNER_WORKSPACE:/app"
 
           env: | # 预配置
-            ENERGY_FRAMEWORK: CEF-101_LINUX_32
+            ENERGY_FRAMEWORK: CEF-101_LINUX_ARMv7
             GoVer: go1.20.14.linux-armv6l.tar.gz
             CEFVer: 101.0.18
             LibLCLVer: 2.5.0
@@ -60,13 +60,13 @@ jobs:
             # 1. 预设置全局Go环境变量
             export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
-
+            
             # 2. 安装当前系统架构的 Golang, https://golang.google.cn/dl/
             /app/shell/install-go.sh $GoVer
-
+            
             # 3. 安装 energy cli
             /app/shell/install-energy.sh
-
+            
             # 4. 安装 EnergyFramework, 该脚本 有3个参数, 1: CEF 版本, 2: liblcl 版本, 3: 可选 "" 或 gtk3
             # CEF: https://sourceforge.net/projects/liblcl/files/CEF
             # LibLCL: https://sourceforge.net/projects/liblcl/files
@@ -76,7 +76,7 @@ jobs:
             energy env -w Root:/app/
             energy env -w Framework:$ENERGY_FRAMEWORK
             energy env
-
+            
             # 6. 开始构建和打包项目
             cd /app/demo-actions
             go env -w GOFLAGS=-buildvcs=false
@@ -84,7 +84,7 @@ jobs:
             energy build -o demo
             file demo
             energy package -f demo -o demo-linuxarm32.deb
-
+            
             # 7. 将安装包移动到 /app/install 目录
             mv /app/demo-actions/build/linux/demo-linuxarm32.deb  /app/install
 
