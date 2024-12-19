@@ -10,6 +10,7 @@ jobs:
   Linux-32:
     runs-on: ${{ matrix.operating-system }}
 
+    # 因 glib c限制, 最底支持ubuntu 10.08  - 不修改
     strategy:
       matrix:
         operating-system: [ ubuntu-20.04 ]
@@ -20,13 +21,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Config Base Environment  # 配置基础环境
+      # 配置基础环境 - 不修改
+      - name: Config Base Environment
         run: |
           mkdir $RUNNER_WORKSPACE/install
           mkdir $RUNNER_WORKSPACE/energy
           mv ./.github/shell $RUNNER_WORKSPACE/shell
           chmod -R +x $RUNNER_WORKSPACE/shell
 
+      # 在 docker 内构建 - 不修改
       - name: Container Build and Package
         uses: uraimo/run-on-arch-action@v2
         id: build
@@ -40,12 +43,11 @@ jobs:
           dockerRunArgs: | # 挂载目录 固定 /app
             --volume "$RUNNER_WORKSPACE:/app"
 
-          env: | # 预配置
+          env: | # 脚本安装 预配置 - Go版本
             GoVer: go1.20.14.linux-386.tar.gz
             ENERGY_FRAMEWORK: CEF-101_LINUX_32
             CEFVer: 101.0.18
             LibLCLVer: 2.5.0
-            UseGTK3: ""
 
           shell: /bin/bash # 在容器中运行命令的shell
 
@@ -54,7 +56,7 @@ jobs:
             apt-get install -q -y git wget curl p7zip-full
             apt-get install -q -y make binutils build-essential gdb subversion zip unzip libx11-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev libgtk-3-dev
 
-          run: | # run 在容器中运行的命令
+          run: | # run 在容器中运行的命令 - 根据情况修改
             # 1. 预设置全局Go环境变量
             export GOBIN=/app/go/bin
             export PATH=$PATH:/app/go/bin
@@ -70,9 +72,9 @@ jobs:
             # LibLCL: https://sourceforge.net/projects/liblcl/files
             /app/shell/install-energy-framework.sh $CEFVer $LibLCLVer
 
-            # 5. 配置 EnergyFramework 开发环境 .energy
-            energy env -w Root:/app/
-            energy env -w Framework:$ENERGY_FRAMEWORK
+            # 5. 使用 energy cli 开发开发环境 .energy
+            energy env -w root:/app/
+            energy env -w framework:$ENERGY_FRAMEWORK
             energy env
 
             # 6. 开始构建和打包项目

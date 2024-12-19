@@ -22,13 +22,13 @@ jobs:
         with:
           go-version: '1.20'
 
-      # 创建基础环境目录
+      # 创建基础环境目录 - 不修改
       - name: Config Base Environment
         run: |
           mkdir $RUNNER_WORKSPACE/app
           mkdir $RUNNER_WORKSPACE/app/install
 
-      # 安装 energy cli
+      # 安装 energy cli - 不修改
       - name: Install ENERGY CLI
         run: |
           cd $RUNNER_WORKSPACE/app
@@ -37,14 +37,14 @@ jobs:
           go install
           energy cli -v
 
-      # MacOSX64 安装开发环境
+      # MacOSX64 安装开发环境 - 根据情况修改
       - name: Install ENERGY CEF AMD-64
         run: |
           cd $RUNNER_WORKSPACE/app
           energy install --all
           energy env
 
-      # 编译和打包
+      # 编译和打包 - 根据情况修改
       - name: Build and Package AMD64
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
@@ -54,14 +54,14 @@ jobs:
           
           mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-macosx64.pkg" "$RUNNER_WORKSPACE/app/install"
 
-      # MacOSARM64 安装 ARM64 架构
+      # MacOSARM64 安装 ARM64 架构 - 根据情况修改
       - name: Install ENERGY CEF ARM-64
         run: |
           cd $RUNNER_WORKSPACE/app
           energy install --all --arch=arm64
           energy env
 
-      # 编译和打包, 删除 build 文件夹
+      # 编译和打包, 删除 build 文件夹 - 根据情况修改
       - name: Build and Package ARM64
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
