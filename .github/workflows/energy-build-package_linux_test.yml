@@ -87,7 +87,7 @@ jobs:
             energy package -f demo -o demo-linuxarmv7l.deb
             
             # 7. 将安装包移动到 /app/install 目录
-            mv /app/demo-actions/build/linux/demo-linuxarmv7l.deb  /app/install
+            mv /app/energy/examples/demo/build/linux/demo-linuxarmv7l.deb  /app/install
 
       - name: Build and Package END
         run: |
