@@ -56,8 +56,6 @@ jobs:
           energy package -f="demo-amd64.exe" -o="demo-windows64.exe" -c
           
           mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-windows64.exe" D:/app/install
-
-          ls -al D:/app/install/
         shell: bash
 
       # windows 32 安装开发环境
@@ -77,7 +75,10 @@ jobs:
           energy package -f="demo-32.exe" -o="demo-windows32.exe" -c
           
           mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-windows32.exe" D:/app/install
+        shell: bash
 
+      - name: Build and Package END
+        run: |
           ls -al D:/app/install/
         shell: bash
 
