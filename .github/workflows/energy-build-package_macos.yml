@@ -50,9 +50,9 @@ jobs:
           cd $RUNNER_WORKSPACE/demo-actions
           
           energy build -o="demo-amd64"
-          energy package -f="demo-amd64" -o="demo-install-amd64"
+          energy package -f="demo-amd64" -o="demo-install-amd64" --pkg
           
-          mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-install-amd64" "$RUNNER_WORKSPACE/app/install"
+          mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-install-amd64.pkg" "$RUNNER_WORKSPACE/app/install"
 
           ls -al $RUNNER_WORKSPACE/install
 
