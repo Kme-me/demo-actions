@@ -37,7 +37,7 @@ jobs:
           go install
           energy cli -v
 
-      # MacOSX 64 安装开发环境
+      # MacOSX64 安装开发环境
       - name: Install ENERGY CEF AMD-64
         run: |
           cd $RUNNER_WORKSPACE/app
@@ -54,7 +54,29 @@ jobs:
           
           mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-install-amd64.pkg" "$RUNNER_WORKSPACE/app/install"
 
-          ls -al $RUNNER_WORKSPACE/install
+          ls -al $RUNNER_WORKSPACE/app/install
+
+      # MacOSARM64 安装 ARM64 架构
+      # 注意切换架构, 然后交叉编译出 M 架构
+      - name: Install ENERGY CEF ARM-64
+        run: |
+          cd $RUNNER_WORKSPACE/app
+          energy install --all --arch=arm64
+          energy env
+          energy env -w framework:CEF-118_DARWIN_ARM64
+
+      # 编译和打包, 删除 build 文件夹
+      - name: Build and Package ARM64
+        run: |
+          cd $RUNNER_WORKSPACE/demo-actions
+          rm -rf build
+          
+          energy build -o="demo-arm64"
+          energy package -f="demo-arm64" -o="demo-install-arm64" --pkg
+          
+          mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-install-arm64.pkg" "$RUNNER_WORKSPACE/app/install"
+
+          ls -al $RUNNER_WORKSPACE/app/install
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
