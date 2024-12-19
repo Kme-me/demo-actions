@@ -19,13 +19,15 @@
 
 ### 开始
 
-照葫芦画瓢
+- 需要你认真去看
 
-主要东西都在 `demo-actions` 仓库的 `.github` 目录
+- 照葫芦画瓢
+
+- 主要东西都在 `demo-actions` 仓库的 `.github` 目录
 
 #### 工作流 [workflows](.github%2Fworkflows)
 
-`.yml`结构和定义不说了，自己去了解。
+`.yml`结构和定义不说了，自己去了解
 
 分成了四个工作流文件. 方便阅读
 
