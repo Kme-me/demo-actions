@@ -43,17 +43,18 @@ jobs:
           cd $RUNNER_WORKSPACE/app
           energy install --all
           energy env
+
       # 编译和打包
       - name: Build and Package AMD64
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
           
-          energy build -o="demo-actions-amd64"
-          energy package -f="demo-actions-amd64" -o="demo-actions-install-amd64"
+          energy build -o="demo-amd64"
+          energy package -f="demo-amd64" -o="demo-install-amd64"
           
-          //mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-actions-install-amd64" "$RUNNER_WORKSPACE/app/install"
+          mv "$RUNNER_WORKSPACE/demo-actions/build/darwin/demo-install-amd64" "$RUNNER_WORKSPACE/app/install"
 
-          //ls -al $RUNNER_WORKSPACE/app
+          ls -al $RUNNER_WORKSPACE/install
 
       - name: Release Dynamic library # 版本发布上传liblcl二进制
         uses: softprops/action-gh-release@v2
