@@ -46,15 +46,16 @@ jobs:
           energy install --all --cef=109
           energy env
         shell: bash
+
       # 编译和打包
       - name: Build and Package AMD64
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
           
-          energy build -o="demo-actions-amd64.exe"
-          energy package -f="demo-actions-amd64.exe" -o="demo-actions-install-amd64.exe" -c
+          energy build -o="demo-amd64.exe"
+          energy package -f="demo-amd64.exe" -o="demo-windows64.exe" -c
           
-          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-amd64.exe" D:/app/install
+          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-windows64.exe" D:/app/install
 
           ls -al D:/app/install/
         shell: bash
@@ -66,15 +67,16 @@ jobs:
           energy install --all --cef=109 --arch=386
           energy env
         shell: bash
+
       # 编译和打包
       - name: Build and Package 32
         run: |
           cd $RUNNER_WORKSPACE/demo-actions
           
-          energy build -o="demo-actions-32.exe" --arch="386"
-          energy package -f="demo-actions-32.exe" -o="demo-actions-install-32.exe" -c
+          energy build -o="demo-32.exe" --arch="386"
+          energy package -f="demo-32.exe" -o="demo-windows32.exe" -c
           
-          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-actions-install-32.exe" D:/app/install
+          mv "$RUNNER_WORKSPACE/demo-actions/build/windows/demo-windows32.exe" D:/app/install
 
           ls -al D:/app/install/
         shell: bash

@@ -2,9 +2,6 @@ name: Energy Build and Package Linux Test
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
 
 jobs:
   Linux-armv7l:
