@@ -68,7 +68,7 @@ jobs:
           cd $RUNNER_WORKSPACE/demo-actions
           rm -rf build
           
-          energy build -o="demo-arm64"
+          energy build -o="demo-arm64" --arch=arm64
           file demo-arm64
           energy package -f="demo-arm64" -o="demo-macosarm64" --pkg
           
