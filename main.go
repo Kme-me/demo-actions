@@ -2,8 +2,10 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"github.com/energye/energy/v2/cef"
 	"github.com/energye/energy/v2/cef/ipc"
+	"github.com/energye/energy/v2/common"
 	"github.com/energye/energy/v2/pkgs/assetserve"
 	"github.com/energye/golcl/lcl"
 	"github.com/energye/golcl/lcl/rtl/version"
@@ -11,14 +13,20 @@ import (
 
 //go:embed resources
 var resources embed.FS
+var config string
 
 func main() {
+	fmt.Println("config:", config)
 	//Global initialization must be called
 	cef.GlobalInit(nil, &resources)
 	//Create an application
 	app := cef.NewApplication()
+	if common.IsDarwin() {
+		app.SetUseMockKeyChain(true)
+	}
 	//http's url
 	cef.BrowserWindow.Config.Url = "http://localhost:22022/index.html"
+	cef.BrowserWindow.Config.Title = "demo actions 示例"
 	//Security key and value settings for built-in static resource services
 	assetserve.AssetsServerHeaderKeyName = "energy"
 	assetserve.AssetsServerHeaderKeyValue = "energy"
