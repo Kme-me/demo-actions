@@ -43,7 +43,7 @@ jobs:
             ENERGY_FRAMEWORK: CEF-101_LINUX_ARMv7
             GoVer: go1.20.14.linux-armv6l.tar.gz
             CEFVer: 101.0.18
-            LibLCLVer: 2.5.0
+            LibLCLVer: 2.5.1
             GOARM: 7
 
           shell: /bin/bash # 在容器中运行命令的shell
