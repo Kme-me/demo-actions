@@ -10,7 +10,7 @@ jobs:
   Linux-32:
     runs-on: ${{ matrix.operating-system }}
 
-    # 因 glib c限制, 最底支持ubuntu 10.08  - 不修改
+    # 因 glib c限制, 最底支持ubuntu 18.04  - 不修改
     strategy:
       matrix:
         operating-system: [ ubuntu-20.04 ]
