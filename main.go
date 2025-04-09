@@ -4,63 +4,30 @@ import (
 	"embed"
 	"fmt"
 	"github.com/energye/energy/v2/cef"
-	"github.com/energye/energy/v2/cef/ipc"
-	"github.com/energye/energy/v2/common"
-	"github.com/energye/energy/v2/pkgs/assetserve"
-	"github.com/energye/golcl/lcl"
-	"github.com/energye/golcl/lcl/rtl/version"
 )
 
 //go:embed resources
 var resources embed.FS
-var config string
 
+// 这是一个简单的窗口创建示例
 func main() {
-	fmt.Println("config:", config)
-	//Global initialization must be called
+	//全局初始化 每个应用都必须调用的
 	cef.GlobalInit(nil, &resources)
-	//Create an application
-	app := cef.NewApplication()
-	if common.IsDarwin() {
-		app.SetUseMockKeyChain(true)
-	}
-	//http's url
-	cef.BrowserWindow.Config.Url = "http://localhost:22022/index.html"
-	cef.BrowserWindow.Config.Title = "demo actions 示例"
-	//Security key and value settings for built-in static resource services
-	assetserve.AssetsServerHeaderKeyName = "energy"
-	assetserve.AssetsServerHeaderKeyValue = "energy"
-	cef.SetBrowserProcessStartAfterCallback(func(b bool) {
-		server := assetserve.NewAssetsHttpServer() //Built in HTTP service
-		server.PORT = 22022                        //Service Port Number
-		server.AssetsFSName = "resources"          //Resource folder with the same name
-		server.Assets = &resources                 //Assets resources
-		go server.StartHttpServer()
+	//创建应用
+	cefApp := cef.NewApplication()
+	//主窗口的配置
+	cef.BrowserWindow.Config.IconFS = "resources/icon.ico"
+	//指定一个URL地址，或本地html文件目录
+	cef.BrowserWindow.Config.Url = "https://www.baidu.com"
+	//窗口的标题
+	cef.BrowserWindow.Config.Title = "energy - 这是一个简单的窗口示例"
+	//窗口宽高
+	cef.BrowserWindow.Config.Width = 1024
+	cef.BrowserWindow.Config.Height = 768
+	//创建窗口时的回调函数 对浏览器事件设置，和窗口属性组件等创建和修改
+	cef.BrowserWindow.SetBrowserInit(func(event *cef.BrowserEvent, browserWindow cef.IBrowserWindow) {
+		fmt.Println("SetBrowserInit")
 	})
-	// run main process and main thread
-	cef.BrowserWindow.SetBrowserInit(browserInit)
-	//run app
-	cef.Run(app)
-}
-
-// run main process and main thread
-func browserInit(event *cef.BrowserEvent, window cef.IBrowserWindow) {
-	// index.html ipc.emit("count", [count++])
-	ipc.On("count", func(value int) {
-		println("count", value)
-	})
-	// page load end
-	event.SetOnLoadEnd(func(sender lcl.IObject, browser *cef.ICefBrowser, frame *cef.ICefFrame, httpStatusCode int32, window cef.IBrowserWindow) {
-		// index.html, ipc.on("osInfo", function(){...})
-		println("osInfo", version.OSVersion.ToString())
-		ipc.Emit("osInfo", version.OSVersion.ToString())
-		var windowType string
-		if window.IsLCL() {
-			windowType = "LCL"
-		} else {
-			windowType = "VF"
-		}
-		// index.html, ipc.on("windowType", function(){...});
-		ipc.Emit("windowType", windowType)
-	})
+	//运行应用
+	cef.Run(cefApp)
 }
